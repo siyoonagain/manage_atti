@@ -5,262 +5,35 @@ document.addEventListener("DOMContentLoaded", function () {
   const cancelBtn = document.getElementById("cancel");
   const confirmBtn = document.getElementById("confirm");
 
-  //   상품 추가하기
-  if (AddBtn) {
-    AddBtn.addEventListener("click", addProduct);
-  } else {
-    console.log("AddBtn 요소를 찾을 수 없습니다.");
+  /* ---------------------------
+     공통 함수
+  --------------------------- */
+
+  function qs(selector, parent = document) {
+    return parent.querySelector(selector);
   }
 
-  //   상품 주문하기
-  if (previewOrderBtn) {
-    previewOrderBtn.addEventListener("click", function () {
-      const userNameEl = document.getElementById("userName");
-      const userIdEl = document.getElementById("userId");
-      const agreeChk = document.getElementById("agreeChk");
-
-      const userName = userNameEl.value.trim();
-      const userId = userIdEl.value.trim().replace(/\s+/g, "");
-
-      if (!userName) {
-        showToast("이름을 입력해주세요.");
-        userNameEl.focus();
-        return;
-      }
-
-      if (!userId) {
-        showToast("아이디를 입력해주세요.");
-        userIdEl.focus();
-        return;
-      }
-
-      if (!agreeChk.checked) {
-        showToast("개인정보 수집 동의가 필요합니다.");
-        agreeChk.focus();
-        return;
-      }
-
-      previewOrder();
-    });
-  } else {
-    console.log("previewOrderBtn 요소를 찾을 수 없습니다.");
+  function qsa(selector, parent = document) {
+    return parent.querySelectorAll(selector);
   }
 
-  //   취소하기
-  if (cancelBtn) {
-    cancelBtn.addEventListener("click", closePopup);
-  } else {
-    console.log("cancelBtn 요소를 찾을 수 없습니다.");
+  function formatPrice(num) {
+    return Number(num).toLocaleString() + "원";
   }
 
-  //   제출하기
-  if (confirmBtn) {
-    confirmBtn.addEventListener("click", submitOrder);
-  } else {
-    console.log("confirmBtn 요소를 찾을 수 없습니다.");
+  function getItemPrice(productName, colorName, sizeName) {
+    const item = products[productName];
+    if (!item) return 0;
+
+    const basePrice = Number(item.basePrice) || 0;
+    const colorExtra = Number(item.colorPrice?.[colorName]) || 0;
+    const sizeExtra = Number(item.sizes?.[sizeName]) || 0;
+
+    return basePrice + colorExtra + sizeExtra;
   }
 
-  //   상품 추가하기 fucntion
-  function addProduct() {
-    const count = document.querySelectorAll(".order-box").length + 1;
-
-    let options = `<option value="">상품 선택</option>`;
-
-    for (let name in products) {
-      options += `<option value="${name}">${name}</option>`;
-    }
-
-    const html = `
-  <div class="order-box">
-    <div class="top">
-      <div class="num">상품 ${count}</div>
-      <button class="del" onclick="removeBox(this)">삭제</button>
-    </div>
-
-    <div class="item">
-      <label class="label">상품명</label>
-      <select onchange="changeProduct(this)">
-        ${options}
-      </select>
-      <div class="price">가격 : -</div>
-    </div>
-
-    <div class="item">
-      <label class="label">컬러옵션</label>
-      <select class="color" disabled>
-        <option>상품 먼저 선택</option>
-      </select>
-    </div>
-
-    <div class="item">
-      <label class="label">사이즈</label>
-      <select class="size" disabled onchange="changeSize(this)">
-        <option>상품 먼저 선택</option>
-      </select>
-    </div>
-  </div>
-  `;
-
-    orderList.insertAdjacentHTML("beforeend", html);
-  }
-
-  //   상품 옵션 변경하기
-  window.changeProduct = function (el) {
-    const box = el.closest(".order-box");
-    const color = box.querySelector(".color");
-    const size = box.querySelector(".size");
-    const price = box.querySelector(".price");
-
-    const value = el.value;
-
-    color.innerHTML = "";
-    size.innerHTML = "";
-
-    if (!value) {
-      price.innerText = "가격 : -";
-      color.disabled = true;
-      size.disabled = true;
-      color.innerHTML = "<option>상품 먼저 선택</option>";
-      size.innerHTML = "<option>상품 먼저 선택</option>";
-      return;
-    }
-
-    color.disabled = false;
-    size.disabled = false;
-
-    color.innerHTML = `<option value="">컬러 선택</option>`;
-    size.innerHTML = `<option value="">사이즈 선택</option>`;
-
-    products[value].colors.forEach((item) => {
-      color.innerHTML += `<option value="${item}">${item}</option>`;
-    });
-
-    Object.keys(products[value].sizes).forEach((item) => {
-      size.innerHTML += `<option value="${item}">${item}</option>`;
-    });
-
-    price.innerText =
-      "기본가 : " + products[value].basePrice.toLocaleString() + "원";
-  };
-
-  //   사이즈 가격별 불러오기 기능
-  window.changeSize = function (el) {
-    const box = el.closest(".order-box");
-    const product = box.querySelector("select").value;
-    const price = box.querySelector(".price");
-
-    if (!product || !el.value) return;
-
-    const item = products[product];
-    const totalPrice = item.basePrice + item.sizes[el.value];
-
-    price.innerText = "가격 : " + totalPrice.toLocaleString() + "원";
-  };
-
-  window.removeBox = function (btn) {
-    const box = btn.closest(".order-box");
-
-    const product = box.querySelector("select").value;
-    const color = box.querySelector(".color").value;
-    const size = box.querySelector(".size").value;
-
-    let msg = "";
-
-    if (product) {
-      msg = product;
-
-      if (color) msg += " / " + color;
-      if (size) msg += " / " + size;
-
-      msg += " 삭제되었습니다.";
-    } else {
-      msg = "상품이 삭제되었습니다.";
-    }
-
-    box.remove();
-
-    resetNumber();
-
-    showToast(msg);
-  };
-
-  function resetNumber() {
-    document.querySelectorAll(".order-box").forEach((box, index) => {
-      box.querySelector(".num").innerText = "상품 " + (index + 1);
-    });
-  }
-
-  //   주문 미리보기 팝업
-  function previewOrder() {
-    const boxes = document.querySelectorAll(".order-box");
-
-    let html = "";
-    let total = 0;
-
-    boxes.forEach((box, index) => {
-      const product = box.querySelector("select").value;
-      const color = box.querySelector(".color").value;
-      const size = box.querySelector(".size").value;
-
-      if (product && size) {
-        const item = products[product];
-        const price = item.basePrice + item.sizes[size];
-
-        total += price;
-
-        html += `
-      <div class="pop-item">
-        ${index + 1}. ${product}<br>
-        컬러 : ${color}<br>
-        사이즈 : ${size}<br>
-        금액 : ${price.toLocaleString()}원
-      </div>
-      `;
-      }
-    });
-
-    if (html == "") {
-      alert("상품을 선택해주세요.");
-      return;
-    }
-
-    /* 배송비 계산 */
-    let shipping = total >= 50000 ? 0 : 3500;
-
-    /* 무료배송 안내 */
-    let freeMsg = "";
-
-    if (total >= 50000) {
-      freeMsg = "🚚 무료배송 적용되었습니다!";
-    } else {
-      let remain = 50000 - total;
-      freeMsg = `🎁 ${remain.toLocaleString()}원 더 담으면 무료배송!`;
-    }
-
-    /* 최종금액 */
-    let finalTotal = total + shipping;
-
-    document.getElementById("popList").innerHTML = html;
-
-    document.getElementById("totalPrice").innerHTML = `
-    상품합계 : ${total.toLocaleString()}원<br>
-    배송비 : ${shipping.toLocaleString()}원<br>
-    <strong>예상 결제금액 : ${finalTotal.toLocaleString()}원</strong><br><br>
-    <span style="color:#e60023;font-weight:bold;">
-      ${freeMsg}
-    </span>
-  `;
-
-    document.getElementById("popup").style.display = "block";
-  }
-
-  function closePopup() {
-    document.getElementById("popup").style.display = "none";
-  }
-
-  //   토스트 팝업 기능
   function showToast(msg) {
-    const toast = document.getElementById("toast");
+    const toast = qs("#toast");
 
     toast.innerText = msg;
     toast.classList.add("show");
@@ -272,78 +45,286 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 1800);
   }
 
-  //   제출하기 기능
-  // submitOrder 함수 전체 교체
+  function resetNumber() {
+    qsa(".order-box").forEach((box, index) => {
+      qs(".num", box).innerText = "상품 " + (index + 1);
+    });
+  }
 
-  function submitOrder() {
-    const userName = document.getElementById("userName").value.trim();
+  function closePopup() {
+    qs("#popup").style.display = "none";
+  }
 
-    const userId = document
-      .getElementById("userId")
-      .value.trim()
-      .replace(/\s+/g, "");
+  /* ---------------------------
+     상품 추가
+  --------------------------- */
 
-    const agreeChk = document.getElementById("agreeChk").checked;
+  function addProduct() {
+    const count = qsa(".order-box").length + 1;
 
-    if (!userName) {
-      showToast("이름을 입력해주세요.");
-      document.getElementById("userName").focus();
+    let options = `<option value="">상품 선택</option>`;
+
+    for (let name in products) {
+      options += `<option value="${name}">${name}</option>`;
+    }
+
+    const html = `
+      <div class="order-box">
+        <div class="top">
+          <div class="num">상품 ${count}</div>
+          <button type="button" class="del" onclick="removeBox(this)">삭제</button>
+        </div>
+
+        <div class="item">
+          <label class="label">상품명</label>
+          <select onchange="changeProduct(this)">
+            ${options}
+          </select>
+          <div class="price">가격 : -</div>
+        </div>
+
+        <div class="item">
+          <label class="label">컬러옵션</label>
+          <select class="color" disabled onchange="changeSize(this)">
+            <option>상품 먼저 선택</option>
+          </select>
+        </div>
+
+        <div class="item">
+          <label class="label">사이즈</label>
+          <select class="size" disabled onchange="changeSize(this)">
+            <option>상품 먼저 선택</option>
+          </select>
+        </div>
+      </div>
+    `;
+
+    orderList.insertAdjacentHTML("beforeend", html);
+  }
+
+  /* ---------------------------
+     상품 변경
+  --------------------------- */
+
+  window.changeProduct = function (el) {
+    const box = el.closest(".order-box");
+
+    const product = el.value;
+    const color = qs(".color", box);
+    const size = qs(".size", box);
+    const price = qs(".price", box);
+
+    color.innerHTML = "";
+    size.innerHTML = "";
+
+    if (!product) {
+      color.disabled = true;
+      size.disabled = true;
+
+      color.innerHTML = `<option>상품 먼저 선택</option>`;
+      size.innerHTML = `<option>상품 먼저 선택</option>`;
+      price.innerText = "가격 : -";
       return;
     }
 
-    if (!userId) {
-      showToast("아이디를 입력해주세요.");
-      document.getElementById("userId").focus();
-      return;
+    const item = products[product];
+
+    color.disabled = false;
+    size.disabled = false;
+
+    color.innerHTML = `<option value="">컬러 선택</option>`;
+    size.innerHTML = `<option value="">사이즈 선택</option>`;
+
+    item.colors.forEach((v) => {
+      color.innerHTML += `<option value="${v}">${v}</option>`;
+    });
+
+    Object.keys(item.sizes).forEach((v) => {
+      size.innerHTML += `<option value="${v}">${v}</option>`;
+    });
+
+    price.innerText = "기본가 : " + formatPrice(item.basePrice);
+  };
+
+  /* ---------------------------
+     옵션 가격 반영
+  --------------------------- */
+
+  window.changeSize = function (el) {
+    const box = el.closest(".order-box");
+
+    const product = qs("select", box).value;
+    const color = qs(".color", box).value;
+    const size = qs(".size", box).value;
+    const price = qs(".price", box);
+
+    if (!product || !size) return;
+
+    const totalPrice = getItemPrice(product, color, size);
+
+    price.innerText = "가격 : " + formatPrice(totalPrice);
+  };
+
+  /* ---------------------------
+     삭제
+  --------------------------- */
+
+  window.removeBox = function (btn) {
+    const box = btn.closest(".order-box");
+
+    const product = qs("select", box).value;
+    const color = qs(".color", box).value;
+    const size = qs(".size", box).value;
+
+    let msg = "상품이 삭제되었습니다.";
+
+    if (product) {
+      msg = product;
+
+      if (color) msg += " / " + color;
+      if (size) msg += " / " + size;
+
+      msg += " 삭제되었습니다.";
     }
 
-    if (!agreeChk) {
-      showToast("개인정보 수집 동의가 필요합니다.");
-      document.getElementById("agreeChk").focus();
-      return;
-    }
+    box.remove();
 
-    const boxes = document.querySelectorAll(".order-box");
+    resetNumber();
+    showToast(msg);
+  };
 
-    let orderData = [];
+  /* ---------------------------
+     주문 데이터 추출
+  --------------------------- */
+
+  function getOrderData() {
+    const boxes = qsa(".order-box");
+
     let total = 0;
+    let orderData = [];
 
     boxes.forEach((box, index) => {
-      const product = box.querySelector("select").value;
-      const color = box.querySelector(".color").value;
-      const size = box.querySelector(".size").value;
+      const product = qs("select", box).value;
+      const color = qs(".color", box).value;
+      const size = qs(".size", box).value;
 
       if (product && color && size) {
-        const item = products[product];
-        const price = item.basePrice + item.sizes[size];
+        const price = getItemPrice(product, color, size);
 
         total += price;
 
         orderData.push({
           no: index + 1,
-          product: product,
-          color: color,
-          size: size,
-          price: price,
+          product,
+          color,
+          size,
+          price,
         });
       }
     });
 
-    if (orderData.length === 0) {
+    return {
+      items: orderData,
+      total: total,
+    };
+  }
+
+  /* ---------------------------
+     미리보기
+  --------------------------- */
+
+  function previewOrder() {
+    const result = getOrderData();
+
+    if (result.items.length === 0) {
       showToast("상품 옵션을 선택해주세요.");
       return;
     }
 
-    // 로딩 팝업 열기
-    const loading = document.getElementById("loading");
-    const loadingBox = document.querySelector(".loading-box");
+    let html = "";
+
+    result.items.forEach((item, index) => {
+      html += `
+        <div class="pop-item">
+          ${index + 1}. ${item.product}<br>
+          컬러 : ${item.color}<br>
+          사이즈 : ${item.size}<br>
+          금액 : ${formatPrice(item.price)}
+        </div>
+      `;
+    });
+
+    const shipping = result.total >= 50000 ? 0 : 3500;
+    const finalTotal = result.total + shipping;
+
+    let freeMsg = "";
+
+    if (result.total >= 50000) {
+      freeMsg = "🚚 무료배송 적용되었습니다!";
+    } else {
+      freeMsg =
+        "🎁 " +
+        formatPrice(50000 - result.total).replace("원", "") +
+        "원 더 담으면 무료배송!";
+    }
+
+    qs("#popList").innerHTML = html;
+
+    qs("#totalPrice").innerHTML = `
+      상품합계 : ${formatPrice(result.total)}<br>
+      배송비 : ${formatPrice(shipping)}<br>
+      <strong>예상 결제금액 : ${formatPrice(finalTotal)}</strong><br><br>
+      <span style="color:#e60023;font-weight:bold;">
+        ${freeMsg}
+      </span>
+    `;
+
+    qs("#popup").style.display = "block";
+  }
+
+  /* ---------------------------
+     주문 제출
+  --------------------------- */
+
+  function submitOrder() {
+    const userName = qs("#userName").value.trim();
+    const userId = qs("#userId").value.trim().replace(/\s+/g, "");
+    const agreeChk = qs("#agreeChk").checked;
     const apiUrl = document.body.dataset.apiUrl;
+
+    if (!userName) {
+      showToast("이름을 입력해주세요.");
+      qs("#userName").focus();
+      return;
+    }
+
+    if (!userId) {
+      showToast("아이디를 입력해주세요.");
+      qs("#userId").focus();
+      return;
+    }
+
+    if (!agreeChk) {
+      showToast("개인정보 수집 동의가 필요합니다.");
+      return;
+    }
+
+    const result = getOrderData();
+
+    if (result.items.length === 0) {
+      showToast("상품 옵션을 선택해주세요.");
+      return;
+    }
+
+    const loading = qs("#loading");
+    const loadingBox = qs(".loading-box");
+
     loading.style.display = "block";
 
     loadingBox.innerHTML = `
-    <div class="spinner"></div>
-    <div class="loading-text">주문 넣는 중입니다...</div>
-  `;
+      <div class="spinner"></div>
+      <div class="loading-text">주문 넣는 중입니다...</div>
+    `;
 
     fetch(apiUrl, {
       method: "POST",
@@ -353,11 +334,11 @@ document.addEventListener("DOMContentLoaded", function () {
       },
       body: JSON.stringify({
         orderDate: new Date().toLocaleString("ko-KR"),
-        userName: userName,
-        userId: userId,
+        userName,
+        userId,
         agree: "동의",
-        totalPrice: total,
-        items: orderData,
+        totalPrice: result.total,
+        items: result.items,
       }),
     })
       .then(() => {
@@ -373,29 +354,39 @@ document.addEventListener("DOMContentLoaded", function () {
         showToast("주문이 정상 접수되었습니다.");
 
         setTimeout(() => {
-          loading.style.display = "none";
           location.reload();
-        }, 3000);
+        }, 2500);
       })
       .catch(() => {
         loadingBox.innerHTML = `
-      <div class="loading-text">전송 오류가 발생했습니다.</div>
-    `;
+          <div class="loading-text">전송 오류가 발생했습니다.</div>
+        `;
 
         setTimeout(() => {
           loading.style.display = "none";
         }, 1500);
       });
   }
+
+  /* ---------------------------
+     공지 토글
+  --------------------------- */
+
+  window.toggleNotice = function () {
+    const box = qs("#detailNotice");
+
+    box.style.display = box.style.display === "block" ? "none" : "block";
+  };
+
+  /* ---------------------------
+     이벤트 연결
+  --------------------------- */
+
+  if (AddBtn) AddBtn.addEventListener("click", addProduct);
+  if (previewOrderBtn) previewOrderBtn.addEventListener("click", previewOrder);
+  if (cancelBtn) cancelBtn.addEventListener("click", closePopup);
+  if (confirmBtn) confirmBtn.addEventListener("click", submitOrder);
+
+  /* 최초 1개 생성 */
   addProduct();
-
-  function toggleNotice() {
-    const box = document.getElementById("detailNotice");
-
-    if (box.style.display === "block") {
-      box.style.display = "none";
-    } else {
-      box.style.display = "block";
-    }
-  }
 });
