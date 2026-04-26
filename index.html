@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>주문하기</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <h1 class="title">주문하기</h1>
+      <div class="user-box">
+        <div class="item">
+          <label class="label">주문자 이름</label>
+          <input type="text" id="userName" placeholder="홍길동" />
+        </div>
+
+        <div class="item">
+          <label class="label">아이디</label>
+          <input type="text" id="userId" placeholder="abcd1234" />
+        </div>
+      </div>
+
+      <div class="card">
+        <div id="orderList"></div>
+
+        <button id="AddBtn" type="button" class="btn-add">+ 상품 추가</button>
+        <!-- 개인정보 수집 및 이용 동의 -->
+        <div class="agree-box">
+          <label class="agree-label">
+            <input type="checkbox" id="agreeChk" checked />
+            개인정보 수집 및 이용에 동의합니다. (필수)
+          </label>
+
+          <div class="agree-text">
+            수집항목 : 이름, 아이디, 주문정보<br />
+            이용목적 : 주문 확인 및 고객 응대<br />
+            보관기간 : 주문 완료 후 3개월 보관 후 파기
+          </div>
+        </div>
+        <button id="previewOrder" type="button" class="btn-submit">
+          주문하기
+        </button>
+      </div>
+    </div>
+
+    <!-- 팝업 -->
+    <div class="dim" id="popup">
+      <div class="popup">
+        <div class="pop-title">주문 내역 확인</div>
+
+        <div class="pop-list" id="popList"></div>
+
+        <div class="total" id="totalPrice"></div>
+
+        <div class="pop-btns">
+          <button id="cancel" class="cancel">취소</button>
+          <button id="confirm" class="confirm">제출하기</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 제출 로딩 팝업 -->
+    <div class="loading" id="loading">
+      <div class="loading-box">
+        <div class="spinner"></div>
+        <div class="loading-text">주문 넣는 중입니다...</div>
+      </div>
+    </div>
+    <!-- 토스트 알림 -->
+    <div id="toast"></div>
+    <script src="/js/products.js"></script>
+    <script src="/js/function.js"></script>
+  </body>
+</html>
