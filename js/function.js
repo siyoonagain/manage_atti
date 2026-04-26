@@ -337,7 +337,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // 로딩 팝업 열기
     const loading = document.getElementById("loading");
     const loadingBox = document.querySelector(".loading-box");
-
+    const apiUrl = document.body.dataset.apiUrl;
     loading.style.display = "block";
 
     loadingBox.innerHTML = `
@@ -345,24 +345,21 @@ document.addEventListener("DOMContentLoaded", function () {
     <div class="loading-text">주문 넣는 중입니다...</div>
   `;
 
-    fetch(
-      "https://script.google.com/macros/s/AKfycbxKADK6iNA0I8W1HEON-Up-fKsI9AymRIlSYWBL4Os71xGNXGUSw9GRcoEn2-Xb2ABT4w/exec",
-      {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          orderDate: new Date().toLocaleString("ko-KR"),
-          userName: userName,
-          userId: userId,
-          agree: "동의",
-          totalPrice: total,
-          items: orderData,
-        }),
+    fetch(apiUrl, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/json",
       },
-    )
+      body: JSON.stringify({
+        orderDate: new Date().toLocaleString("ko-KR"),
+        userName: userName,
+        userId: userId,
+        agree: "동의",
+        totalPrice: total,
+        items: orderData,
+      }),
+    })
       .then(() => {
         loadingBox.innerHTML = `
           <div class="success-check">✓</div>
