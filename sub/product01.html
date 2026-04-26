@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>아띠벨로 - ㅇㅇㅇ 추가주문하기</title>
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="../favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="../css/style.css" />
+    <!-- 오픈그래프 -->
+    <meta
+      name="description"
+      content="간편하게 추가 주문을 접수할 수 있는 아띠벨로 주문 페이지입니다. 상품 선택 후 빠르게 주문서를 작성해보세요."
+    />
+    <meta
+      name="keywords"
+      content="추가주문서, 주문서, 아띠벨로, 아동복주문, 라이브주문, 간편주문"
+    />
+    <meta name="author" content="아띠벨로" />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:image" content="../img/og_image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="top-nav">
+        <a href="../index.html" class="back-btn">← 홈으로</a>
+      </div>
+      <div class="top-area">
+        <div class="profile-img">
+          <img src="../img/profile.jpg" alt="아띠벨로 프로필" />
+        </div>
+
+        <div class="profile-info">
+          <h1>아띠벨로</h1>
+          <p>추가 주문 전용 페이지</p>
+        </div>
+      </div>
+      <h1 class="title" style="margin-top: 16px">라라랜드 추가주문하기</h1>
+      <div class="user-box">
+        <div class="item card">
+          <label class="label">주문자 이름</label>
+          <input type="text" id="userName" placeholder="홍길동" />
+        </div>
+
+        <div class="item card">
+          <label class="label">아이디</label>
+          <input type="text" id="userId" placeholder="abcd1234" />
+        </div>
+      </div>
+
+      <div class="card">
+        <div id="orderList"></div>
+
+        <button id="AddBtn" type="button" class="btn-add">+ 상품 추가</button>
+        <!-- 개인정보 수집 및 이용 동의 -->
+        <div class="agree-box">
+          <label class="agree-label">
+            <input type="checkbox" id="agreeChk" checked />
+            개인정보 수집 및 이용에 동의합니다. (필수)
+          </label>
+
+          <div class="agree-text">
+            수집항목 : 이름, 아이디, 주문정보<br />
+            이용목적 : 주문 확인 및 고객 응대<br />
+            보관기간 : 주문 완료 후 3개월 보관 후 파기
+          </div>
+        </div>
+        <button id="previewOrder" type="button" class="btn-submit">
+          주문하기
+        </button>
+      </div>
+      <div class="footer">© 아띠벨로 All Rights Reserved.</div>
+    </div>
+
+    <!-- 팝업 -->
+    <div class="dim" id="popup">
+      <div class="popup">
+        <div class="pop-title">주문 내역 확인</div>
+
+        <div class="pop-list" id="popList"></div>
+
+        <div class="total" id="totalPrice"></div>
+
+        <div class="pop-btns">
+          <button id="cancel" class="cancel">취소</button>
+          <button id="confirm" class="confirm">제출하기</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 제출 로딩 팝업 -->
+    <div class="loading" id="loading">
+      <div class="loading-box">
+        <div class="spinner"></div>
+        <div class="loading-text">주문 넣는 중입니다...</div>
+      </div>
+    </div>
+    <!-- 토스트 알림 -->
+    <div id="toast"></div>
+    <script src="../js/products01.js"></script>
+    <script src="../js/function.js"></script>
+  </body>
+</html>
