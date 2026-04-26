@@ -346,7 +346,7 @@ document.addEventListener("DOMContentLoaded", function () {
   `;
 
     fetch(
-      "https://script.google.com/macros/s/AKfycbzM0djcfaIb1bmjk9B3Mi5DNExsFytIbUj1AOu2UmE-f5IxHHsKxLPGwQvLdrAECU41dQ/exec",
+      "https://script.google.com/macros/s/AKfycbxKADK6iNA0I8W1HEON-Up-fKsI9AymRIlSYWBL4Os71xGNXGUSw9GRcoEn2-Xb2ABT4w/exec",
       {
         method: "POST",
         mode: "no-cors",
