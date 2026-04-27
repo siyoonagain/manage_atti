@@ -20,15 +20,7 @@ const products = {
       "체크",
       "딸기",
     ],
-    sizes: {
-      XS: 0,
-      S: 0,
-      M: 0,
-      L: 0,
-      XL: 0,
-      JS: 2880,
-      JM: 2880,
-    },
+    sizes: { XS: 0, S: 0, M: 0, L: 0, XL: 0, JS: 2880, JM: 2880 },
   },
 
   데일리면고쟁이: {
@@ -44,85 +36,43 @@ const products = {
       "버터옐로우",
       "브라운",
     ],
-    sizes: {
-      XS: 0,
-      S: 0,
-      M: 0,
-      L: 0,
-      XL: 0,
-      JS: 1440,
-      JM: 1440,
-    },
+    sizes: { XS: 0, S: 0, M: 0, L: 0, XL: 0, JS: 1440, JM: 1440 },
   },
 
   세로요루고쟁이: {
     basePrice: 8640,
+    colors: ["블루", "올리브그린", "빈티지레드", "베이지"],
+    sizes: { XS: 0, S: 0, M: 0, L: 0, XL: 0, JS: 1440, JM: 1440 },
+  },
+
+  요루고쟁이: {
+    basePrice: 10800,
     colors: ["크림", "올리브노랑", "그린", "스카이블루", "검정"],
-    sizes: {
-      XS: 0,
-      S: 0,
-      M: 0,
-      L: 0,
-      XL: 0,
-      JS: 1440,
-      JM: 1440,
-    },
+    sizes: { XS: 0, S: 0, M: 0, L: 0, XL: 0, JS: 1440, JM: 1440 },
   },
 
   구부줄린넨팬츠: {
-    basePrice: 10080,
-    colors: ["아이", "레드", "올리브", "백메란지", "차콜"],
-    sizes: {
-      XS: 0,
-      S: 0,
-      M: 0,
-      L: 0,
-      XL: 0,
-      JS: 4320,
-      JM: 4320,
-    },
+    basePrice: 18720,
+    colors: ["인디고", "검정", "크림"],
+    sizes: { XS: 0, S: 0, M: 0, L: 0, XL: 0, JS: 4320, JM: 4320 },
   },
 
   바스락라이트랙팬츠: {
     basePrice: 18000,
     colors: ["아이", "베이비핑크", "그레이", "검정"],
-    sizes: {
-      XS: 0,
-      S: 0,
-      M: 0,
-      L: 0,
-      XL: 0,
-      JS: 1440,
-      JM: 1440,
-    },
+    sizes: { XS: 0, S: 0, M: 0, L: 0, XL: 0, JS: 1440, JM: 1440 },
   },
 
   체크팬츠: {
     basePrice: 8640,
     colors: ["소라", "핑크", "레드", "검정"],
-    sizes: {
-      XS: 0,
-      S: 0,
-      M: 0,
-      L: 0,
-      XL: 0,
-      JS: 1440,
-      JM: 1440,
-    },
+    sizes: { XS: 0, S: 0, M: 0, L: 0, XL: 0, JS: 1440, JM: 1440 },
   },
 
   칠부베이직면바지: {
     basePrice: 11520,
     colors: ["베이지", "카키", "인디블루", "아이", "네츄럴크림"],
-    sizes: {
-      XS: 0,
-      S: 0,
-      M: 0,
-      L: 0,
-      XL: 0,
-      JS: 1440,
-      JM: 1440,
-    },
+    sizes: { XS: 0, S: 0, M: 0, L: 0, XL: 0, JS: 1440, JM: 1440 },
   },
 
   구부시원면바지: {
@@ -188,121 +138,91 @@ const products = {
   N로고모자: {
     basePrice: 11520,
     colors: ["크림", "검정", "노랑", "소라"],
-    sizes: {
-      FREE: 0,
-    },
+    sizes: { FREE: 0 },
   },
 
   볼캡1607: {
     basePrice: 11520,
     colors: ["검정", "겨자", "크림"],
-    sizes: {
-      FREE: 0,
-    },
+    sizes: { FREE: 0 },
   },
 
   아웃도어모자: {
     basePrice: 11520,
     colors: ["그레이", "오렌지"],
-    sizes: {
-      FREE: 0,
-    },
+    sizes: { FREE: 0 },
   },
 
   웨이브버킷햇: {
     basePrice: 5760,
     colors: ["연베이지", "진베이지"],
-    sizes: {
-      FREE: 0,
-    },
+    sizes: { FREE: 0 },
   },
 
   스트랩보넷모자: {
     basePrice: 12960,
     colors: ["진베이지", "연베이지"],
-    sizes: {
-      FREE: 0,
-    },
+    sizes: { FREE: 0 },
   },
 
   하트리본선글라스: {
     basePrice: 3600,
     colors: ["흰색", "핑크", "검정"],
-    sizes: {
-      FREE: 0,
-    },
+    sizes: { FREE: 0 },
   },
 
   포켓선글라스: {
     basePrice: 6480,
     colors: ["노랑", "초록", "핑크"],
-    sizes: {
-      FREE: 0,
-    },
+    sizes: { FREE: 0 },
   },
 
   네모라운드선글라스: {
     basePrice: 3600,
     colors: ["검정", "베이지"],
-    sizes: {
-      FREE: 0,
-    },
+    sizes: { FREE: 0 },
   },
 
   몬몬선글라스: {
     basePrice: 5040,
     colors: ["핑크", "소라", "보라", "아이", "크림", "검정"],
-    sizes: {
-      FREE: 0,
-    },
+    sizes: { FREE: 0 },
   },
 
   투명라인선글라스: {
     basePrice: 3600,
     colors: ["검정", "그린", "핑크"],
-    sizes: {
-      FREE: 0,
-    },
+    sizes: { FREE: 0 },
   },
 
   하트케이스목걸이선글라스: {
     basePrice: 10080,
     colors: ["핑크", "크림", "검정"],
-    sizes: {
-      FREE: 0,
-    },
+    sizes: { FREE: 0 },
   },
 
   목걸이썬글라스: {
     basePrice: 9360,
     colors: ["01", "02", "03", "04", "05", "06"],
-    sizes: {
-      FREE: 0,
-    },
+    sizes: { FREE: 0 },
   },
 
   곰선글라스: {
     basePrice: 3600,
-    sizes: {
-      FREE: 0,
-    },
     colors: ["검정", "브라운", "핑크", "오렌지"],
+    sizes: { FREE: 0 },
   },
 
   리본자수니삭스: {
     basePrice: 7200,
     colors: ["2족세트"],
-    sizes: {
-      FREE: 0,
-    },
+    sizes: { FREE: 0 },
   },
 
   레이스리본양말: {
     basePrice: 14400,
     colors: ["2족세트"],
-    sizes: {
-      FREE: 0,
-    },
+    sizes: { FREE: 0 },
   },
 
   라벨린넨면반바지: {
@@ -329,7 +249,6 @@ const products = {
 
   라벨카고반바지: {
     basePrice: 11520,
-    // (ㅇ 14400원),
     colors: ["백메란지", "검정", "메란지", "인디블루", "카키"],
     sizes: { XS: 0, S: 0, M: 0, L: 0, XL: 0, JS: 2880, JM: 2880 },
   },
@@ -748,7 +667,7 @@ const products = {
 
   미니골지원피스티: {
     basePrice: 15840,
-    colors: ["레드", "노랑", "핑크", "크림"],
+    colors: ["레드", "노랑", "핑크"],
     sizes: { XS: 0, S: 0, M: 0, L: 0, XL: 0, JS: 1440, JM: 1440 },
   },
 
@@ -850,7 +769,6 @@ const products = {
 
   여름라벨상하: {
     basePrice: 14400,
-    // (ㅇ 17280원),
     colors: ["오트밀", "딥레드", "노랑"],
     sizes: { XS: 0, S: 0, M: 0, L: 0, XL: 0, JS: 2880, JM: 2880 },
   },
@@ -872,6 +790,8 @@ const products = {
     colors: ["흰색", "검정"],
     sizes: { XS: 0, S: 0, M: 0, L: 0, XL: 0, JS: 1440, JM: 1440 },
   },
+
+  //
 
   // 체커보드반바지: {
   //   basePrice: 11520,
