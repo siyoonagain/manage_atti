@@ -487,6 +487,11 @@ a {
 .back-btn:hover {
   color: #111;
 }
+
+/* 인스타 녹방 */
+.instagram-media.instagram-media-rendered {
+  margin: 12px auto 12px auto !important;
+}
 /* 하단 */
 .footer {
   text-align: center;
