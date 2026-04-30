@@ -7,7 +7,7 @@
 const products = {
   베베기본티: {
     basePrice: 11520,
-    colors: 블랙 / 화이트,
+    colors: ["블랙", "화이트"],
     sizes: {
       bebeS: 0,
       bebeM: 0,
