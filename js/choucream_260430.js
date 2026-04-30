@@ -294,4 +294,16 @@ const products = {
       bebeM: 0,
     },
   },
+
+  퓨어프릴스커트: {
+    basePrice: 21600,
+    colors: ["화이트"],
+    sizes: { S: 0, M: 0, L: 0 },
+  },
+
+  캉캉레이어드나시: {
+    basePrice: 17280,
+    colors: ["무지", "도트"],
+    sizes: { S: 0, M: 0, L: 0 },
+  },
 };
